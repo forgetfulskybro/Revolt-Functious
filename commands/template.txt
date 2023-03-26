@@ -1,0 +1,20 @@
+const Embed = require("../functions/embed")
+
+module.exports = {
+    config: {
+        name: "",
+        description: "",
+        usage: "",
+        cooldown: 5000,
+        available: true,
+        permissions: [],
+        aliases: []
+    },
+    run: async (client, message, args) => {
+
+        await new Paginator([], { timeout: 5 * 2e4, user: message.author._id, client: client })
+            .add([embed, embed2])
+            .start(message.channel);
+    },
+};
+ 

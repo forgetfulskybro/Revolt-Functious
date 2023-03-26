@@ -1,0 +1,70 @@
+const Embed = require(`../functions/embed`)
+const Giveaways = require(`../models/giveaways`)
+const dhms = require(`../functions/dhms`);
+const regex = new RegExp(`channel:(<#!?(.*)>)`)
+module.exports = {
+    config: {
+        name: `giveaway`,
+        description: `Creates a giveaway. Maximum of 5 giveaways per server.`,
+        usage: `[Time, E.g. 20m] | [Winners] | [Prize] | [Requirement (Optional)] [Channel (Optional), E.g. channel:#giveaways]`,
+        cooldown: 5000,
+        permissions: [`ManageServer`],
+        available: true,
+        aliases: ["gw"]
+    },
+    run: async (client, message, args) => {
+        const check = await Giveaways.find({ serverId: message.channel.server._id, ended: false })
+        if (check.length === 20) return message.reply({ embeds: [new Embed().setDescription(`This server has 20 giveaways currently running. Wait until one finishes before making anymore!`).setColor(`#FF0000`)] });
+        const options = args.join(` `).split(`|`).map(x => x.trim()).filter(x => x);
+        const prize = options[2] ? options[2].slice(0, 500) : null;
+        const winners = options[1];
+        const time = options[0];
+        const reactions = [client.config.emojis.confetti, client.config.emojis.stop]
+
+        let requirement;
+        let channel;
+        if (options[3]) {
+            requirement = options[3].slice(0, 500).replace(`${options[3].match(regex)[0]}`, "").trim();
+            if (requirement.length === 0) requirement = null;
+            if (options[3] && regex.test(options[3]) && client.channels.get(options[3].match(regex)[2])) channel = client.channels.get(options[3].match(regex)[2])
+            else channel = message.channel;
+        }
+        else { requirement = null; channel = message.channel; }
+
+        if (!time) return message.reply({ embeds: [new Embed().setDescription(`Please provide a time.\nExample: \`${client.config.prefix}giveaway 20m | 3 | A t-shirt\``).setColor(`#FF0000`)] });
+        if (!winners) return message.reply({ embeds: [new Embed().setDescription(`Please provide the amount of winners. Maximum: 5\nExample: \`${client.config.prefix}giveaway 20m | 3 | A t-shirt\``).setColor(`#FF0000`)] });
+        if (!options[2]) return message.reply({ embeds: [new Embed().setDescription(`Please provide the prize.\nExample: \`${client.config.prefix}giveaway 20m | 3 | A t-shirt\``).setColor(`#FF0000`)] });
+        if (Array.from({ length: 299000 }, (_, i) => i + 1).includes(dhms(time))) return message.reply({ embeds: [new Embed().setDescription(`Giveaways can only be 5 minutes or above in time!\nExample: \`${client.config.prefix}giveaway 20m | 3 | A t-shirt\``).setColor(`#FF0000`)] })
+        if (time > 31556952000) return message.reply({ embeds: [new Embed().setDescription(`Please provide a time shorter than 365 days.\nExample: \`${client.config.prefix}giveaway 20m | 3 | A t-shirt\``).setColor(`#FF0000`)] });
+        if (!isNaN(time) || dhms(time) <= 0) return message.reply({ embeds: [new Embed().setDescription(`You failed to follow the giveaway format.\nExample: \`${client.config.prefix}giveaway 20m | 3 | A t-shirt\``).setColor(`#FF0000`)] })
+        if (winners <= 0 || isNaN(winners)) return message.reply(`You failed to properly specify how many winners there are!\nExample: \`${client.config.prefix}giveaway 20m | 3 | A t-shirt\``)
+        if (winners > 5) return message.reply(`When making a giveaway, you can only have a maximum of 5 winners!\nExample: \`${client.config.prefix}giveaway 20m | 3 | A t-shirt\``)
+
+        const embed = new Embed()
+            .setColor("#A52F05")
+            .setTitle(`Giveaway`)
+            .setDescription(`React with ${client.config.emojis.confetti} to enter!\nHosted by: <@${message.author._id}>\n\nTime: <t:${Math.floor((dhms(time) + Date.now()) / 1000)}:R>\nPrize: ${prize}\nWinners: ${winners}${requirement ? `\nRequirement: ${requirement.slice(0, 500)}` : ``}`)
+
+        if (!channel.havePermission("SendMessage")) return message.reply({ embeds: [new Embed().setDescription(`I do not have permission to send messages in <#${channel._id}>`).setColor(`#FF0000`)] });
+        if (!channel.havePermission("SendEmbeds")) return message.reply({ embeds: [new Embed().setDescription(`I do not have permission to send embeds in <#${channel._id}>`).setColor(`#FF0000`)] });
+        if (!channel.havePermission("ViewChannel")) return message.reply({ embeds: [new Embed().setDescription(`I do not have permission to view <#${channel._id}>`).setColor(`#FF0000`)] });
+        if (!channel.havePermission("React")) return message.reply({ embeds: [new Embed().setDescription(`I do not have permission to add reactions in <#${channel._id}>`).setColor(`#FF0000`)] });
+
+        if (options[3] && regex.test(options[3])) { message.reply(`Successfully sent giveaway to <#${options[3].match(regex)[2]}>`) }
+        else message.delete().catch(() => { });
+
+        channel.sendMessage({ embeds: [embed], interactions: [reactions] }).then(async msg => {
+            await (new Giveaways({
+                owner: message.author._id,
+                serverId: message.channel.server._id,
+                channelId: channel._id,
+                messageId: msg._id,
+                time: dhms(time),
+                now: Date.now(),
+                prize: prize,
+                winners: winners,
+                requirement: requirement
+            }).save())
+        });
+    }
+};

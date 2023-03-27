@@ -18,7 +18,6 @@ const config = {
         "o": "⭕",
         "check": "✅",
         "cross": "❌",
-        
     },
 };
 

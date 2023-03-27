@@ -9,10 +9,8 @@ client.config = require("./config");
 client.reactions = new Map();
 client.paginate = new Map();
 client.timeout = new Map();
-client.accept = new Map();
 client.polls = new Map();
 client.used = new Map();
-client.ttt = new Map();
 
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true)

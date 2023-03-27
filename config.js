@@ -11,6 +11,7 @@ const config = {
         "seven": "7️⃣",
         "eight": "8️⃣",
         "nine": "9️⃣",
+        "ten": "🔟",
         "confetti": "🎊",
         "stop": "🛑",
         "x": "❌",

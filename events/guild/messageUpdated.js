@@ -2,6 +2,21 @@ const Embed = require("../../functions/embed");
 const PollDB = require("../../models/polls");
 const Giveaways = require("../../models/giveaways");
 
+function convertEmojiNum(emoji) {
+    if (emoji === "1️⃣") return 0;
+    else if (emoji === "2️⃣") return 1;
+    else if (emoji === "3️⃣") return 2;
+    else if (emoji === "4️⃣") return 3;
+    else if (emoji === "5️⃣") return 4;
+    else if (emoji === "6️⃣") return 5;
+    else if (emoji === "7️⃣") return 6;
+    else if (emoji === "8️⃣") return 7;
+    else if (emoji === "9️⃣") return 8;
+    else if (emoji === "🔟") return 9;
+    else if (emoji === "🛑") return "stop";
+    else return null;
+}
+
 module.exports = async (client, message, newMsg) => {
     if (newMsg.data && newMsg.data.content && newMsg.type === "MessageUpdate") {
         const testCmd = client.commands.get(newMsg.data.content.slice(client.config.prefix.length)) || client.aliases.get(newMsg.data.content.slice(client.config.prefix.length));
@@ -54,42 +69,57 @@ module.exports = async (client, message, newMsg) => {
                     }
             }
         } else if (pollCheck) {
-            if (newMsg.emoji_id === client.config.emojis.one && !pollCheck.users.includes(newMsg.user_id)) {
-                pollCheck.users.push(newMsg.user_id);
-                let user = await client.users.get(newMsg.user_id);
-                if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
-                await pollCheck.poll.addVote(0, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
-                message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
-            } else if (newMsg.emoji_id === client.config.emojis.two && !pollCheck.users.includes(newMsg.user_id)) {
-                pollCheck.users.push(newMsg.user_id);
-                let user = await client.users.get(newMsg.user_id);
-                if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
-                await pollCheck.poll.addVote(1, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
-                message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
-            } else if (newMsg.emoji_id === client.config.emojis.three && !pollCheck.users.includes(newMsg.user_id)) {
-                pollCheck.users.push(newMsg.user_id);
-                let user = await client.users.get(newMsg.user_id);
-                if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
-                await pollCheck.poll.addVote(2, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
-                message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
-            } else if (newMsg.emoji_id === client.config.emojis.four && !pollCheck.users.includes(newMsg.user_id)) {
-                pollCheck.users.push(newMsg.user_id);
-                let user = await client.users.get(newMsg.user_id);
-                if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
-                await pollCheck.poll.addVote(3, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
-                message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
-            } else if (newMsg.emoji_id === client.config.emojis.five && !pollCheck.users.includes(newMsg.user_id)) {
-                pollCheck.users.push(newMsg.user_id);
-                let user = await client.users.get(newMsg.user_id);
-                if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
-                await pollCheck.poll.addVote(4, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
-                message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
-            } else if (newMsg.emoji_id === client.config.emojis.stop && newMsg.user_id === pollCheck.owner) {
+            let convert = convertEmojiNum(newMsg.emoji_id);
+            if (convert === "stop" && pollCheck.owner === newMsg.user_id) {
                 await PollDB.findOneAndDelete({ messageId: message._id });
                 await pollCheck.poll.update();
                 message.edit({ content: `Owner (<@${pollCheck.owner}>) ended the poll early. These are the final results:`, embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#F24646")] }).catch(() => { });
                 client.polls.delete(message._id);
-            }
+            } else if (convert) {
+                if (pollCheck.users.includes(newMsg.user_id)) return;
+                pollCheck.users.push(newMsg.user_id);
+                let user = await client.users.get(newMsg.user_id);
+                if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
+                await pollCheck.poll.addVote(convert, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
+                message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
+            } else return;
+
+            // if (newMsg.emoji_id === client.config.emojis.one && !pollCheck.users.includes(newMsg.user_id)) {
+            //     pollCheck.users.push(newMsg.user_id);
+            //     let user = await client.users.get(newMsg.user_id);
+            //     if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
+            //     await pollCheck.poll.addVote(0, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
+            //     message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
+            // } else if (newMsg.emoji_id === client.config.emojis.two && !pollCheck.users.includes(newMsg.user_id)) {
+            //     pollCheck.users.push(newMsg.user_id);
+            //     let user = await client.users.get(newMsg.user_id);
+            //     if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
+            //     await pollCheck.poll.addVote(1, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
+            //     message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
+            // } else if (newMsg.emoji_id === client.config.emojis.three && !pollCheck.users.includes(newMsg.user_id)) {
+            //     pollCheck.users.push(newMsg.user_id);
+            //     let user = await client.users.get(newMsg.user_id);
+            //     if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
+            //     await pollCheck.poll.addVote(2, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
+            //     message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
+            // } else if (newMsg.emoji_id === client.config.emojis.four && !pollCheck.users.includes(newMsg.user_id)) {
+            //     pollCheck.users.push(newMsg.user_id);
+            //     let user = await client.users.get(newMsg.user_id);
+            //     if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
+            //     await pollCheck.poll.addVote(3, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
+            //     message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
+            // } else if (newMsg.emoji_id === client.config.emojis.five && !pollCheck.users.includes(newMsg.user_id)) {
+            //     pollCheck.users.push(newMsg.user_id);
+            //     let user = await client.users.get(newMsg.user_id);
+            //     if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
+            //     await pollCheck.poll.addVote(4, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
+            //     message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
+            // } else if (newMsg.emoji_id === client.config.emojis.stop && newMsg.user_id === pollCheck.owner) {
+            //     await PollDB.findOneAndDelete({ messageId: message._id });
+            //     await pollCheck.poll.update();
+            //     message.edit({ content: `Owner (<@${pollCheck.owner}>) ended the poll early. These are the final results:`, embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#F24646")] }).catch(() => { });
+            //     client.polls.delete(message._id);
+            // }
         } else {
             const db = await Giveaways.findOne({ messageId: message._id });
             if (newMsg.emoji_id === client.config.emojis.confetti && db && !db.ended) {

@@ -7,13 +7,13 @@ class Polls {
         this.client = client;
         this.time = time;
         if (votes) this.votes = votes;
-        else this.votes = options.name.length === 2 ? [0, 0] : options.name.length === 3 ? [0, 0, 0] : options.name.length === 4 ? [0, 0, 0, 0] : [0, 0, 0, 0, 0];
+        else this.votes = options.name.length === 2 ? [0, 0] : options.name.length === 3 ? [0, 0, 0] : options.name.length === 4 ? [0, 0, 0, 0] : options.name.length === 5 ? [0, 0, 0, 0, 0] : options.name.length === 6 ? [0, 0, 0, 0, 0, 0] : options.name.length === 7 ? [0, 0, 0, 0, 0, 0, 0] : options.name.length === 8 ? [0, 0, 0, 0, 0, 0, 0, 0] : options.name.length === 9 ? [0, 0, 0, 0, 0, 0, 0, 0, 0] : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         this.users = users || [];
         this.avatars = avatars || [];
         this.options = { name: name.name, description: name.description };
         this.voteOptions = options;
         this.owner = owner;
-        this.size = { canvas: options.name.length === 2 ? 200 : options.name.length === 3 ? 250 : options.name.length === 4 ? 300 : 350, bar: options.name.length === 2 ? 150 : options.name.length === 3 ? 200 : options.name.length === 4 ? 250 : 300 };
+        this.size = { canvas: options.name.length === 2 ? 200 : options.name.length === 3 ? 250 : options.name.length === 4 ? 300 : options.name.length === 5 ? 350 : options.name.length === 6 ? 400 : options.name.length === 7 ? 450 : options.name.length === 8 ? 500 : options.name.length === 9 ? 550 : 600, bar: options.name.length === 2 ? 150 : options.name.length === 3 ? 200 : options.name.length === 4 ? 250 : options.name.length === 5 ? 300 : options.name.length === 6 ? 350 : options.name.length === 7 ? 400 : options.name.length === 8 ? 450 : options.name.length === 9 ? 500 : 550 };
     }
 
     async start(message, poll) {

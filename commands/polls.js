@@ -7,7 +7,7 @@ const SavedPolls = require(`../models/savedPolls`)
 module.exports = {
     config: {
         name: `polls`,
-        description: `Creates a poll. Maxmimum of 5 polls per user.`,
+        description: `Creates a poll. Maximum of 5 polls per user.`,
         usage: `[Time, E.g. 10m] | [Question] | [Option 1] | [Option 2] | [Options 3-10 (Optional)]`,
         cooldown: 15000,
         available: true,

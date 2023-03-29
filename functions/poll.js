@@ -118,7 +118,7 @@ class Polls {
     }
 
     async addVote(option, user, avatar, id) {
-        if (this.avatars.length == 6) this.avatars.shift();
+        if (this.avatars.length === 6) this.avatars.shift();
         this.avatars.push(avatar);
         this.votes[option]++;
         await PollDB.findOneAndUpdate({ messageId: id }, { $push: { users: user, avatars: avatar }, $inc: { [`votes.${option}`]: 1 } });

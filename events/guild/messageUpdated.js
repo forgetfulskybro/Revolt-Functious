@@ -70,18 +70,19 @@ module.exports = async (client, message, newMsg) => {
             }
         } else if (pollCheck) {
             let convert = convertEmojiNum(newMsg.emoji_id);
+            console.log(convert)
             if (convert === "stop" && pollCheck.owner === newMsg.user_id) {
                 await PollDB.findOneAndDelete({ messageId: message._id });
                 await pollCheck.poll.update();
                 message.edit({ content: `Owner (<@${pollCheck.owner}>) ended the poll early. These are the final results:`, embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#F24646")] }).catch(() => { });
-                client.polls.delete(message._id);
-            } else if (convert) {
+                return client.polls.delete(message._id);
+            } else if (convert === 0 && convert !== "stop" || convert && convert !== "stop") {
                 if (pollCheck.users.includes(newMsg.user_id)) return;
                 pollCheck.users.push(newMsg.user_id);
                 let user = await client.users.get(newMsg.user_id);
                 if (!user) user = await client.api.get(`/users/${newMsg.user_id}`).then(res => client.users.createObj(res, true)).catch(() => { });
                 await pollCheck.poll.addVote(convert, newMsg.user_id, user && user.avatar && user.avatar._id ? `https://autumn.revolt.chat/avatars/${user.avatar._id}` : `https://api.revolt.chat/users/${newMsg.user_id}/default_avatar`, message._id);
-                message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
+                return message.edit({ embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#A52F05")] }).catch(() => { });
             } else return;
         } else {
             const db = await Giveaways.findOne({ messageId: message._id });

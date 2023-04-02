@@ -22,6 +22,10 @@ mongoose.connect(mongoDB, {
 ["aliases", "commands", "events", "functions"].forEach(x => client[x] = new Collection());
 ["command", "event", "function"].forEach(x => require(`./handlers/${x}`)(client));
 
+client.once("ready", () => {
+    console.log(`${client.user.username} is ready!`);
+});
+
 process.on("unhandledRejection", (reason, p) => {
     console.log(" [Error_Handling] :: Unhandled Rejection/Catch");
     console.log(reason, p);

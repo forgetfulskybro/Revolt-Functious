@@ -1,21 +1,7 @@
 const Embed = require("../../functions/embed");
 const PollDB = require("../../models/polls");
 const Giveaways = require("../../models/giveaways");
-
-function convertEmojiNum(emoji) {
-    if (emoji === "1️⃣") return 0;
-    else if (emoji === "2️⃣") return 1;
-    else if (emoji === "3️⃣") return 2;
-    else if (emoji === "4️⃣") return 3;
-    else if (emoji === "5️⃣") return 4;
-    else if (emoji === "6️⃣") return 5;
-    else if (emoji === "7️⃣") return 6;
-    else if (emoji === "8️⃣") return 7;
-    else if (emoji === "9️⃣") return 8;
-    else if (emoji === "🔟") return 9;
-    else if (emoji === "🛑") return "stop";
-    else return null;
-}
+const emojis = [{ name: "1️⃣", id: 0 }, { name: "2️⃣", id: 1 }, { name: "3️⃣", id: 2 }, { name: "4️⃣", id: 3 }, { name: "5️⃣", id: 4 }, { name: "6️⃣", id: 5 }, { name: "7️⃣", id: 6 }, { name: "8️⃣", id: 7 }, { name: "9️⃣", id: 8 }, { name: "🔟", id: 9 }, { name: "🛑", id: "stop" }]
 
 module.exports = async (client, message, newMsg) => {
     if (newMsg.data && newMsg.data.content && newMsg.type === "MessageUpdate") {
@@ -69,14 +55,14 @@ module.exports = async (client, message, newMsg) => {
                     }
             }
         } else if (pollCheck) {
-            let convert = convertEmojiNum(newMsg.emoji_id);
+            let convert = emojis.findIndex(e => e.name === newMsg.emoji_id);
             console.log(convert)
             if (convert === "stop" && pollCheck.owner === newMsg.user_id) {
                 await PollDB.findOneAndDelete({ messageId: message._id });
                 await pollCheck.poll.update();
                 message.edit({ content: `Owner (<@${pollCheck.owner}>) ended the poll early. These are the final results:`, embeds: [new Embed().setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#F24646")] }).catch(() => { });
                 return client.polls.delete(message._id);
-            } else if (convert === 0 && convert !== "stop" || convert && convert !== "stop") {
+            } else if (convert === 0 && convert !== "stop" || convert !== -1 && convert !== "stop") {
                 if (pollCheck.users.includes(newMsg.user_id)) return;
                 pollCheck.users.push(newMsg.user_id);
                 let user = await client.users.get(newMsg.user_id);

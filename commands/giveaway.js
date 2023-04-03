@@ -1,11 +1,11 @@
 const Embed = require(`../functions/embed`)
 const Giveaways = require(`../models/giveaways`)
 const dhms = require(`../functions/dhms`);
-const regex = new RegExp(`channel:(<#!?(.*)>)`)
+const regex = new RegExp(`channel:( |)(<#!?(.*)>|.*)`)
 module.exports = {
     config: {
         name: `giveaway`,
-        description: `Creates a giveaway. Maximum of 5 giveaways per server.`,
+        description: `Creates a giveaway. Maximum of 15 giveaways per server.`,
         usage: `[Time, E.g. 20m] | [Winners] | [Prize] | [Requirement (Optional)] [Channel (Optional), E.g. channel:#giveaways]`,
         cooldown: 5000,
         permissions: [`ManageServer`],
@@ -14,7 +14,7 @@ module.exports = {
     },
     run: async (client, message, args) => {
         const check = await Giveaways.find({ serverId: message.channel.server._id, ended: false })
-        if (check.length === 20) return message.reply({ embeds: [new Embed().setDescription(`This server has 20 giveaways currently running. Wait until one finishes before making anymore!`).setColor(`#FF0000`)] });
+        if (check.length === 15) return message.reply({ embeds: [new Embed().setDescription(`This server has 15 giveaways currently running. Wait until one finishes before making anymore!`).setColor(`#FF0000`)] });
         const options = args.join(` `).split(`|`).map(x => x.trim()).filter(x => x);
         const prize = options[2] ? options[2].slice(0, 500) : null;
         const winners = options[1];
@@ -23,11 +23,13 @@ module.exports = {
 
         let requirement;
         let channel;
+        let option = options[3].match(regex);
         if (options[3]) {
-            requirement = options[3].slice(0, 500).replace(`${options[3].match(regex)[0]}`, "").trim();
+            requirement = options[3].slice(0, 500).replace(`${option ? option[0] : ''}`, "").trim();
+            console.log(options[3].slice(0, 500).replace(`${option ? option[0] : ''}`, ""))
             if (requirement.length === 0) requirement = null;
-            if (options[3] && regex.test(options[3]) && client.channels.get(options[3].match(regex)[2])) channel = client.channels.get(options[3].match(regex)[2])
-            else channel = message.channel;
+            if (options[3] && regex.test(options[3])) channel = client.channels.get(option[3] || option[2])
+            else if (!channel && /^\s*$/.test(requirement)) channel = message.channel;
         }
         else { requirement = null; channel = message.channel; }
 
@@ -46,11 +48,10 @@ module.exports = {
             .setDescription(`React with ${client.config.emojis.confetti} to enter!\nHosted by: <@${message.author._id}>\n\nTime: <t:${Math.floor((dhms(time) + Date.now()) / 1000)}:R>\nPrize: ${prize}\nWinners: ${winners}${requirement ? `\nRequirement: ${requirement.slice(0, 500)}` : ``}`)
 
         if (!channel.havePermission("SendMessage")) return message.reply({ embeds: [new Embed().setDescription(`I do not have permission to send messages in <#${channel._id}>`).setColor(`#FF0000`)] });
-        if (!channel.havePermission("SendEmbeds")) return message.reply({ embeds: [new Embed().setDescription(`I do not have permission to send embeds in <#${channel._id}>`).setColor(`#FF0000`)] });
         if (!channel.havePermission("ViewChannel")) return message.reply({ embeds: [new Embed().setDescription(`I do not have permission to view <#${channel._id}>`).setColor(`#FF0000`)] });
         if (!channel.havePermission("React")) return message.reply({ embeds: [new Embed().setDescription(`I do not have permission to add reactions in <#${channel._id}>`).setColor(`#FF0000`)] });
 
-        if (options[3] && regex.test(options[3])) { message.reply(`Successfully sent giveaway to <#${options[3].match(regex)[2]}>`) }
+        if (options[3] && regex.test(options[3])) { message.reply(`Successfully sent giveaway to <#${option[3] ? option[3].replace(" ", "") : option[2].replace(" ", "")}>`) }
         else message.delete().catch(() => { });
 
         channel.sendMessage({ embeds: [embed], interactions: [reactions] }).then(async msg => {

@@ -4,7 +4,6 @@ const checkGiveaways = require("../../functions/checkGiveaways");
 const Giveaways = require("../../models/giveaways");
 const SavedPolls = require(`../../models/savedPolls`)
 module.exports = async (client) => {
-  console.log(`${client.user.username} is ready!`);
   await checkPolls(client);
   await checkGiveaways(client);
 

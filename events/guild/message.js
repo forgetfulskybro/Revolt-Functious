@@ -22,7 +22,6 @@ module.exports = async (client, message) => {
     if (commandfile) {
         if (!message.content.startsWith(client.config.prefix)) return;
         if (!message.channel.havePermission("SendMessage")) return message.member.user.openDM().then((dm) => { dm.sendMessage(`Unable to send messages in <#${message.channel._id}>, please contact a server administrator to get this settled.`) }).catch(() => { return });
-        if (!message.channel.havePermission("SendEmbeds")) return message.reply(`Need permission to send embedded messages for my commands to work. Please contact a server administrator to get this settled.`).catch(() => { return });
         if (!message.channel.havePermission("React")) return message.reply(`Need permission to react as all of my features use reactions. Please contact a server administrator to get this settled.`).catch(() => { return });
 
         if (!commandfile.config.available && commandfile.config.available !== "Owner" && !client.config.owners.includes(message.author._id)) return message.reply({ embeds: [new Embed().setColor("#FF0000").setDescription(`This command is currently unavailable.`)] }).catch(() => { return });

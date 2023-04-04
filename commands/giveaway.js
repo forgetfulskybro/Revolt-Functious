@@ -22,16 +22,16 @@ module.exports = {
         const reactions = [client.config.emojis.confetti, client.config.emojis.stop]
 
         let requirement;
-        let channel;
-        let option = options[3].match(regex);
+        let channel = true;
         if (options[3]) {
+            let option = options[3] ? options[3].match(regex) : null;
             requirement = options[3].slice(0, 500).replace(`${option ? option[0] : ''}`, "").trim();
-            console.log(options[3].slice(0, 500).replace(`${option ? option[0] : ''}`, ""))
             if (requirement.length === 0) requirement = null;
-            if (options[3] && regex.test(options[3])) channel = client.channels.get(option[3] || option[2])
-            else if (!channel && /^\s*$/.test(requirement)) channel = message.channel;
-        }
-        else { requirement = null; channel = message.channel; }
+
+            if (options[3] && regex.test(options[3])) channel = option[3] ? message.channel.server.channels.find(e => e._id === option[3]) : message.channel.server.channels.find(e => e._id === option[2])
+            if (!channel) return message.reply({ embeds: [new Embed().setDescription(`Please provide a valid channel mention or channel ID.\nExample: \`${client.config.prefix}giveaway 20m | 3 | A t-shirt | channel:#giveaways\`\n\n##### Note: If you are using a channel ID, provide it after the requirement text`).setColor(`#FF0000`)] });
+            if (channel === true || /^\s*$/.test(requirement)) channel = message.channel
+        } else { requirement = null; channel = message.channel; }
 
         if (!time) return message.reply({ embeds: [new Embed().setDescription(`Please provide a time.\nExample: \`${client.config.prefix}giveaway 20m | 3 | A t-shirt\``).setColor(`#FF0000`)] });
         if (!winners) return message.reply({ embeds: [new Embed().setDescription(`Please provide the amount of winners. Maximum: 5\nExample: \`${client.config.prefix}giveaway 20m | 3 | A t-shirt\``).setColor(`#FF0000`)] });
@@ -51,7 +51,7 @@ module.exports = {
         if (!channel.havePermission("ViewChannel")) return message.reply({ embeds: [new Embed().setDescription(`I do not have permission to view <#${channel._id}>`).setColor(`#FF0000`)] });
         if (!channel.havePermission("React")) return message.reply({ embeds: [new Embed().setDescription(`I do not have permission to add reactions in <#${channel._id}>`).setColor(`#FF0000`)] });
 
-        if (options[3] && regex.test(options[3])) { message.reply(`Successfully sent giveaway to <#${option[3] ? option[3].replace(" ", "") : option[2].replace(" ", "")}>`) }
+        if (options[3] && regex.test(options[3]) || /^\s*$/.test(requirement)) { message.reply(`Successfully sent giveaway to <#${channel._id}>`) }
         else message.delete().catch(() => { });
 
         channel.sendMessage({ embeds: [embed], interactions: [reactions] }).then(async msg => {

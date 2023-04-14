@@ -1,3 +1,3 @@
-module.exports = async (client, message, message) => {
+module.exports = async (client, message, dMsg) => {
     
 }

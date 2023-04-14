@@ -8,5 +8,5 @@ module.exports = (client) => {
             client.on(file.split('.')[0].replace(/([A-Z])/g, '/$1').toLowerCase(), evt.bind(null, client));
         };
     };
-    ["client", "guild"].forEach(x => load(x));
+    ["guild"].forEach(x => load(x));
 }; 

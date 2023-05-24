@@ -21,8 +21,8 @@ class Paginator {
         const reactions = ["⏪", "⬅️", "➡️", "⏩"];
         this.pages.forEach((e, i=0) => { e.description = `${e.description}\n\nPage ${i+1} / ${this.pages.length}` })
         const message1 = await channel.sendMessage({ embeds: [this.pages[0]], interactions: { reactions } });
-        this.client.paginate.set(this.user, { pages: this.pages, page: this.page, message: message1._id });
-        setTimeout(() => { this.client.paginate.delete(this.user) }, this.timeout);
+        this.client.paginate.set(this.user, { pages: this.pages, page: this.page, message: message1.id });
+        setTimeout(() => { if (this.client.paginate.get(this.user)) this.client.paginate.delete(this.user) }, this.timeout);
     }
 }
 

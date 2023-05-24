@@ -17,20 +17,20 @@ class Polls {
     }
 
     async start(message, poll) {
-        this.client.polls.set(message._id, { poll, messageId: message._id, users: this.users, owner: this.owner })
+        this.client.polls.set(message.id, { poll, messageId: message.id, users: this.users, owner: this.owner })
         setTimeout(async () => {
-            if (!this.client.polls.get(message._id)) return;
+            if (!this.client.polls.get(message.id)) return;
             await this.update();
             message.edit({ embeds: [new Embed().setMedia(await this.client.Uploader.upload(poll.canvas.toBuffer(), `Poll.png`)).setColor(`#F24646`)], content: "This poll has ended and these are the results:" }).catch(() => { })
-            this.client.polls.delete(message._id);
-            await PollDB.findOneAndDelete({ messageId: message._id });
+            this.client.polls.delete(message.id);
+            await PollDB.findOneAndDelete({ messageId: message.id });
         }, this.time);
 
         if (this.time < 0) return;
         await (new PollDB({
             owner: this.owner,
-            channelId: message.channel._id,
-            messageId: message._id,
+            channelId: message.channelId,
+            messageId: message.id,
             avatars: this.avatars,
             users: this.users,
             votes: this.votes,
@@ -90,10 +90,10 @@ class Polls {
         const ctx = this.canvas.getContext('2d');
         this.ctx = ctx;
 
-        let name = this.options.name.length > 83 ? this.options.name.substring(0, 80) + "..." : this.options.name;
+        let name = this.options.name.length > 70 ? this.options.name.slice(0, 67) + "..." : this.options.name;
         var nameHeight = textHeight(name, ctx);
 
-        let description = this.options.description.length > 83 ? this.options.description.substring(0, 80) + "..." : this.options.description;
+        let description = this.options.description.length > 80 ? this.options.description.slice(0, 77) + "..." : this.options.description;
         var descHeight = textHeight(description, ctx);
 
         ctx.fillStyle = "#23272A";
@@ -122,6 +122,14 @@ class Polls {
         this.avatars.push(avatar);
         this.votes[option]++;
         await PollDB.findOneAndUpdate({ messageId: id }, { $push: { users: user, avatars: avatar }, $inc: { [`votes.${option}`]: 1 } });
+        await this.update();
+        return this.canvas;
+    }
+
+    async removeVote(option, user, avatar, id) {
+        this.avatars.splice(this.avatars.indexOf(avatar), 1);
+        this.votes[option]--;
+        await PollDB.findOneAndUpdate({ messageId: id }, { $pull: { users: user, avatars: avatar }, $inc: { [`votes.${option}`]: -1 } });
         await this.update();
         return this.canvas;
     }
@@ -155,7 +163,7 @@ class Polls {
 
             ctx.fillStyle = "#FFFFFF"; // Option names
             h = textHeight(names[i], ctx);
-            ctx.fillText(names[i].length > 46 ? names[i].substring(0, 46) + "..." : names[i], 30 + paddingLeft, y + 13 + h);
+            ctx.fillText(names[i].length > 65 ? names[i].slice(0, 62) + "..." : names[i], 30 + paddingLeft, y + 13 + h);
 
             if (vote != undefined) {
                 ctx.strokeStyle = "#FFFFFF"; // selection circle

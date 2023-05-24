@@ -6,8 +6,7 @@ async function checkGiveaways(client) {
     for (let gw of giveaways) {
         i++
         setTimeout(async () => {
-            await client.api.get(`/channels/${gw.channelId}/messages/${gw.messageId}`)
-                .then(d => client.messages.createObj(d, true)).catch(() => { }).catch(() => {})
+            await client.channels.get(gw.channelId).fetchMessage(gw.messageId).catch(() => { });
         }, i * 500);
     }
 }

@@ -1,6 +1,6 @@
 const config = {
     "owners": ["01GQ3NS0EB3FF8V2Q6KHX887DS"],
-    "prefix": "!",
+    "prefix": "f!",
     "emojis": {
         "one": "1️⃣",
         "two": "2️⃣",
@@ -14,8 +14,6 @@ const config = {
         "ten": "🔟",
         "confetti": "🎊",
         "stop": "🛑",
-        "x": "❌",
-        "o": "⭕",
         "check": "✅",
         "cross": "❌",
     },

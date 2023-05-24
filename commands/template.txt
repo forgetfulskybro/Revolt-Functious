@@ -12,7 +12,7 @@ module.exports = {
     },
     run: async (client, message, args) => {
 
-        await new Paginator([], { timeout: 5 * 2e4, user: message.author._id, client: client })
+        await new Paginator([], { timeout: 5 * 2e4, user: message.authorId, client: client })
             .add([embed, embed2])
             .start(message.channel);
     },

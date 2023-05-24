@@ -1,18 +1,18 @@
 {
-  "main": "indes.js",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "@discordjs/collection": "^1.3.0",
-    "canvas": "^2.11.0",
+    "@discordjs/collection": "^1.5.1",
+    "canvas": "^2.11.2",
     "fs": "^0.0.1-security",
-    "mongoose": "^6.8.4",
-    "revolt-uploader": "^1.1.0",
-    "revolt.js": "^6.0.19"
+    "mongoose": "^7.2.0",
+    "revolt-uploader": "^1.1.1",
+    "revolt.js": "^7.0.0-beta.4"
   },
   "engines": {
-    "node": "16.0.0"
+    "node": "16.16.0"
   },
   "information": {
     "Developer": "ForGetFulSkyBro",

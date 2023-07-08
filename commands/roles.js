@@ -17,7 +17,7 @@ module.exports = {
         if (args.filter(e => e).length === 0 || args[0].toLowerCase() === "help") {
             const embed = new Embed()
                 .setColor(`#A52F05`)
-                .setDescription(`### ${client.translate.get(db.language, "Commands.roles.view")} ${client.translate.get(db.language, "Commands.roles.usage").replace("h", "H")}\n\n**${client.translate.get(db.language, "Commands.roles.create")}**\n\`${db.prefix}roles ${client.translate.get(db.language, "Commands.roles.createExample")}\`\n\n**${client.translate.get(db.language, "Commands.roles.viewing")}**\n\`${db.prefix}roles view\`\n\n**${client.translate.get(db.language, "Commands.roles.deleting")}**\n\`${db.prefix}roles delete [${client.translate.get(db.language, "Commands.roles.msgId")} ID, e.g. ${message.id}]\``)
+                .setDescription(`### ${client.translate.get(db.language, "Commands.roles.view")} ${client.translate.get(db.language, "Commands.roles.usage").replace("h", "H")}\n\n**${client.translate.get(db.language, "Commands.roles.explain")}**\n${client.translate.get(db.language, "Commands.roles.explain2")}\n\n**${client.translate.get(db.language, "Commands.roles.create")}**\n\`${db.prefix}roles ${client.translate.get(db.language, "Commands.roles.createExample")}\`\n\n**${client.translate.get(db.language, "Commands.roles.viewing")}**\n\`${db.prefix}roles view\`\n\n**${client.translate.get(db.language, "Commands.roles.deleting")}**\n\`${db.prefix}roles delete [${client.translate.get(db.language, "Commands.roles.msgId")} ID, e.g. ${message.id}]\``)
             
             setTimeout(() => client.used.delete(`${message.authorId}-roles`), 6000)
             return message.reply({ embeds: [embed] }, false)

@@ -3,7 +3,7 @@ const Embed = require("./embed");
 const Canvas = require('canvas');
 const format = `${(new Date().getMonth() + 1) < 10 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1}/${new Date().getDate()}/${new Date().getFullYear()} ${new Date().getHours()}:${(new Date().getMinutes() < 10 ? '0' : '') + new Date().getMinutes()}`;
 class Polls {
-    constructor({ time, client, name, options, users, avatars, votes, owner }) {
+    constructor({ time, client, name, options, users, avatars, votes, owner, lang }) {
         this.client = client;
         this.time = time;
         if (votes) this.votes = votes;
@@ -13,15 +13,16 @@ class Polls {
         this.options = { name: name.name, description: name.description };
         this.voteOptions = options;
         this.owner = owner;
+        this.lang = lang;
         this.size = { canvas: options.name.length === 2 ? 200 : options.name.length === 3 ? 250 : options.name.length === 4 ? 300 : options.name.length === 5 ? 350 : options.name.length === 6 ? 400 : options.name.length === 7 ? 450 : options.name.length === 8 ? 500 : options.name.length === 9 ? 550 : 600, bar: options.name.length === 2 ? 150 : options.name.length === 3 ? 200 : options.name.length === 4 ? 250 : options.name.length === 5 ? 300 : options.name.length === 6 ? 350 : options.name.length === 7 ? 400 : options.name.length === 8 ? 450 : options.name.length === 9 ? 500 : 550 };
     }
 
     async start(message, poll) {
-        this.client.polls.set(message.id, { poll, messageId: message.id, users: this.users, owner: this.owner })
+        this.client.polls.set(message.id, { poll, messageId: message.id, users: this.users, owner: this.owner, lang: this.lang })
         setTimeout(async () => {
             if (!this.client.polls.get(message.id)) return;
             await this.update();
-            message.edit({ embeds: [new Embed().setMedia(await this.client.Uploader.upload(poll.canvas.toBuffer(), `Poll.png`)).setColor(`#F24646`)], content: "This poll has ended and these are the results:" }).catch(() => { })
+            message.edit({ embeds: [new Embed().setMedia(await this.client.Uploader.upload(poll.canvas.toBuffer(), `Poll.png`)).setColor(`#F24646`)], content: this.client.translate.get(this.lang, "Functions.poll.end") }).catch(() => { })
             this.client.polls.delete(message.id);
             await PollDB.findOneAndDelete({ messageId: message.id });
         }, this.time);
@@ -34,9 +35,11 @@ class Polls {
             avatars: this.avatars,
             users: this.users,
             votes: this.votes,
+            name: this.options.name,
             desc: this.options.description,
             options: this.voteOptions,
             time: this.time,
+            lang: this.lang,
             now: Date.now(),
         }).save());
     }
@@ -90,7 +93,7 @@ class Polls {
         const ctx = this.canvas.getContext('2d');
         this.ctx = ctx;
 
-        let name = this.options.name.length > 70 ? this.options.name.slice(0, 67) + "..." : this.options.name;
+        let name = this.options.name?.length > 70 ? this.options?.name.slice(0, 67) + "..." : this.options.name;
         var nameHeight = textHeight(name, ctx);
 
         let description = this.options.description.length > 80 ? this.options.description.slice(0, 77) + "..." : this.options.description;

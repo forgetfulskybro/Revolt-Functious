@@ -1,4 +1,4 @@
-function fetchTime(ms, object = false) {
+function fetchTime(ms, client, lang) {
     var totalSeconds = (ms / 1000);
     let years = Math.floor(totalSeconds / 31536000);
     totalSeconds %= 31536000;
@@ -9,15 +9,8 @@ function fetchTime(ms, object = false) {
     let minutes = Math.floor(totalSeconds / 60);
     let seconds = totalSeconds % 60;
     seconds = Math.floor(seconds);
-    if (object === true) return {
-        years,
-        days,
-        hours,
-        minutes,
-        seconds
-    };
 
-    return `${years ? `${years} year(s),` : ""} ${days ? `${days} day(s),` : ""} ${hours ? `${hours} hour(s),` : ""} ${minutes ? `${minutes} minute(s),` : ""} ${seconds} second(s)`;
+    return `${years ? `${years} ${client.translate.get(lang, "Functions.fetchTime.years")},` : ""} ${days ? `${days} ${client.translate.get(lang, "Functions.fetchTime.days")},` : ""} ${hours ? `${hours} ${client.translate.get(lang, "Functions.fetchTime.hours")},` : ""} ${minutes ? `${minutes} ${client.translate.get(lang, "Functions.fetchTime.minutes")},` : ""} ${seconds} ${client.translate.get(lang, "Functions.fetchTime.seconds")}`;
 }
 
 module.exports = fetchTime; 

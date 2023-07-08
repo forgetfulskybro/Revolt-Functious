@@ -1,0 +1,197 @@
+{
+    "Events": {
+        "messageCreate": {
+            "wait": "espere",
+            "wait2": "antes de usar",
+            "wait3": "de novo",
+            "unable": "Sou incapaz de enviar mensagens em",
+            "contact": "por favor entre em contato com um administrador do servidor para resolver esta questão",
+            "noPerms": "Preciso de permissão para reagir sendo que todas minhas funções usam reações",
+            "unavail": "Este comando está indisponível no momento",
+            "perms": "Você não tem as permissões necessárias para usar este comando",
+            "perms2": "Permissão necessária",
+            "prefix": "Meu prefixo é",
+            "prefix2": "Para começar, digite"
+        },
+        "messageReactionAdd": {
+            "title": "título",
+            "owner": "Dono",
+            "end": "encerrou a enquete cedo. Estes são os resultados finais",
+            "tooFast": "Você está reagindo rápido demais! Por favor, aguarde alguns segundos antes de reagir de novo.",
+            "joined": "Você entrou no sorteio",
+            "joined2": "Atualmente há",
+            "joined3": "usuário(s) neste sorteio!",
+            "early": "encerrou o sorteio cedo",
+            "endNone": "Ninguém participou do sorteio, então não houveram vencedores",
+            "ended": "Encerrado",
+            "prize": "Prêmio",
+            "winnersNone": "Vencedor(es): Nenhum",
+            "none": "Nenhum",
+            "reqs": "Requisito",
+            "giveaway": "Sorteio",
+            "partici": "Participantes",
+            "winners": "Vencedor(es)",
+            "congrats": "Parabéns",
+            "youWon": "Você ganhou o sorteio para"
+        },
+        "messageReactionRemove": {
+            "title": "Título",
+            "tooFast": "Você está reagindo rápido demais! Por favor, aguarde alguns segundos antes de reagir de novo.",
+            "left": "Você deixou o sorteio",
+            "left2": "Agora existem",
+            "left3": "usuário(s) neste sorteio"
+        }
+    },
+    "Commands": {
+        "help": {
+            "description": "Comando de ajuda",
+            "usage": "[Comando (Opcional)]",
+            "embeds": {
+                "first": {
+                    "cmdName": "Comando",
+                    "cmdDesc": "Descrição",
+                    "cmdAvail": "Disponibilidade",
+                    "cmdAvail2": "Disponível",
+                    "cmdAvail3": "Indisponível",
+                    "cmdCool": "Recarga",
+                    "cmdCool2": "segundos",
+                    "cmdPerms": "Permissões",
+                    "cmdPerms2": "Nenhuma",
+                    "cmdAlias": "Alternativas",
+                    "cmdUsage": "Uso"
+                },
+                "second": {
+                    "start": "Comandos Disponíveis",
+                    "middle": "Comandos Indisponíveis",
+                    "end": "Para obter mais informações sobre um comando, digite",
+                    "end2": "comando"
+                }
+            }
+        },
+        "info": {
+            "description": "Estatísticas sobre o bot",
+            "start": "Informações Aleatórias",
+            "servers": "Servidores",
+            "giveaways": "Sorteios",
+            "polls": "Enquetes",
+            "uptime": "Tempo ativo",
+            "ping": "Latência",
+            "database": "Banco de Dados",
+            "library": "Biblioteca",
+            "links": "Links",
+            "links2": "Convite",
+            "links3": "Suporte"
+        },
+        "giveaway": {
+            "description": "Cria um sorteio. Reações tem um intervalo de 3 segundos.",
+            "usage": "[Tempo, e.x: 20m] | [Vencedores] | [Prêmio] | [Requisito (Opcional)] [Canal (Opcional), ex.: canal: #sorteios]",
+            "tooMany": "Este servidor possui 15 sorteios em execução agora. Espere até que um termine antes de criar outro!",
+            "validChannel": "Por favor, forneça uma menção ou ID de canal válidos.\nExemplo",
+            "validChannel2": "Observação: Se você estiver utilizando um ID de canal, forneça-o após o texto de requisitos",
+            "validTime": "Por favor, forneça um tempo válido.\nExemplo",
+            "validWinners": "Por favor, forneça a quantidade de vencedores. Máximo: 5\nExemplo",
+            "validPrize": "Por favor, forneça um prêmio.\nExemplo",
+            "ormore": "Sorteios só podem ter 5 minutos ou mais de tempo!\nExemplo",
+            "orless": "Por favor, forneça um tempo menor que 365 dias.\nExemplo",
+            "format": "Você falhou em seguir o formato de sorteios.\nExemplo",
+            "formatWinners": "Você falhou em especificar corretamente quantos vencedores há.\nExemplo",
+            "maxwins": "Ao criar um sorteio, você só pode ter no máximo 5 vencedores.\nExemplo",
+            "giveaway": "Sorteio",
+            "react": "Reaja com",
+            "react2": "para participar!",
+            "hosted": "Hospedado por",
+            "time": "Tempo",
+            "prize": "Prêmio",
+            "winners": "Vencedores",
+            "reqs": "Requisito",
+            "noperms": "Eu não tenho permissões para enviar mensagens em",
+            "noperms2": "Eu não tenho permissões para visualizar",
+            "noperms3": "Eu não tenho permissões para adicionar reações em",
+            "success": "Sorteio enviado com sucesso para"
+        },
+        "polls": {
+            "description": "Cria uma enquete. As reações têm 3 segundos de recarga.",
+            "usage": "[Tempo, por exemplo, 10m] | [Pergunta] | [Opção 1] | [Opção 2] | [Opções 3-10 (Opcionais)]",
+            "tooMany": "Você já tem 5 enquetes em execução. Espere uma terminar antes de criar mais.",
+            "validTime": "Por favor, forneça um tempo válido.\nExemplo",
+            "longerThan": "Por favor, forneça um tempo maior que 30 segundos.\nExemplo",
+            "shorterThan": "Por favor, forneça um tempo menor que 30 dias.\nExemplo",
+            "validQuestion": "Por favor, forneça uma pergunta.\nExemplo",
+            "validOption": "Por favor, forneça uma segunda opção para a pergunta. Máximo de 10 opções.\nExemplo",
+            "validOption2": "Por favor, forneça uma segunda opção para a pergunta. Máximo de 10 opções.\nExemplo",
+            "maxOptions": "Por favor forneça no máximo 10 opções.\nExemplo",
+            "polls": "Enquetes",
+            "title": "Título",
+            "example": "Como você está? | Boa | Ruim"
+        },
+        "reroll": {
+            "description": "Sortear novamente os vencedores de um sorteio. O número do vencedor se baseia na ordem dos vencedores.",
+            "usage": "[ID da Mensagem] [Número do Vencedor, ex: 1, 2, all (todos) | Padrão: all]",
+            "validID": "Por favor, forneça um ID de mensagem válido.",
+            "notValid": "Não foi possível encontrar um sorteio com esse ID de mensagem.",
+            "winners": "Por favor, forneça um número de vencedor (por exemplo, 1, 2, 3) ou use `all` para rolar todos os vencedores novamente!",
+            "notEnded": "Esse torneio ainda não terminou!",
+            "notHosted": "Você não pode sortear novamente este sorteio porque você não o hospedou!",
+            "noUsers": "Não há usuários neste sorteio para sortear novamente!",
+            "noPicks": "Não há mais usuários que possam ser escolhidos para sortear novamente!",
+            "onlyWinners": "Existem somente",
+            "onlyWinners2": "vencedor(es) para escolher!\nExemplo",
+            "winnerNum": "Número do Vencedor"
+        },
+        "prefix": {
+            "success": "Prefixo alterado com sucesso para",
+            "tooMany": "Prefixo não pode ter mais de 8 caracteres.",
+            "prefix": "Prefixo",
+            "change": "Para mudar o prefixo, use",
+            "new": "novo prefixo",
+            "description": "Altera o prefixo padrão para o seu próprio",
+            "usage": "<texto>"
+        },
+        "credits": {
+            "thankyou": "Como desenvolvedor do Functious, eu queria agradecer a todos que contribuíram ao bot.",
+            "thankyou2": "O bot não chegaria onde está sem todos vocês, obrigado!",
+            "translators": "Tradutores",
+            "title": "Créditos",
+            "description": "Créditos para todos os que ajudaram"
+        },
+        "language": {
+            "description": "Muda a língua do bot",
+            "usage": "<língua>",
+            "example": "Exemplo",
+            "current": "Atual",
+            "change": "Você pode alterar o idioma do seu servidor escolhendo um idioma disponível.",
+            "avail": "Disponível",
+            "notAvailable": "O idioma selecionado não é suportado! ",
+            "success": "Idioma alterado com sucesso para"
+        }
+    },
+    "Functions": {
+        "fetchTime": {
+            "years": "ano(s)",
+            "days": "dia(s)",
+            "hours": "hora(s)",
+            "minutes": "minuto(s)",
+            "seconds": "segundo(s)"
+        },
+        "giveawaysEnd": {
+            "giveaway": "Sorteio",
+            "noUsers": "Ninguém participou do sorteio então não foi possível selecionar um vencedor",
+            "ended": "Finalizado",
+            "prize": "Prêmio",
+            "winnersNone": "Vencedor(es): Nenhum",
+            "winners": "Vencedor(es)",
+            "reqs": "Requisito",
+            "noOne": "Ninguém entrou no sorteio",
+            "warn": "[Edição de Canal] Não foi possível editar mensagem",
+            "warn1": "no canal",
+            "warn2": "[Postagem em Canal] Não foi possível postar no canal",
+            "givEnd": "Sorteio encerrado",
+            "partici": "Participantes",
+            "congrats": "Parabéns",
+            "youWon": "Você ganhou o sorteio para"
+        },
+        "poll": {
+            "end": "Esta enquete terminou e estes são os resultados"
+        }
+    }
+}

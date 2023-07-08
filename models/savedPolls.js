@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const Schema = new mongoose.Schema({
+const savedPolls = new Schema({
     owner: { type: String },
     desc: { type: String },
     options: { type: Object },
 });
 
-module.exports = mongoose.model("savedPolls", Schema); 
+module.exports = model("savedPolls", savedPolls); 

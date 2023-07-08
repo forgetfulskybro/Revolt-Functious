@@ -1,0 +1,163 @@
+{
+    "Events": {
+        "messageCreate": {
+            "wait": "",
+            "wait2": "",
+            "wait3": ""
+        },
+        "messageReactionAdd": {
+            "title": "",
+            "owner": "",
+            "end": "",
+            "tooFast": "",
+            "joined": "",
+            "joined2": "",
+            "joined3": "",
+            "early": "",
+            "endNone": "",
+            "ended": "",
+            "prize": "",
+            "winnersNone": "",
+            "none": "",
+            "reqs": "",
+            "giveaway": "",
+            "partici": "",
+            "winners": "",
+            "congrats": "",
+            "youWin": ""
+        },
+        "messageReactionRemove": {
+            "title": "",
+            "tooFast": "",
+            "left": "",
+            "left2": "",
+            "left3": ""
+        }
+    },
+    "Commands": {
+        "help": {
+            "description": "",
+            "usage": "",
+            "embeds": {
+                "first": {
+                    "cmdName": "",
+                    "cmdDesc": "",
+                    "cmdAvail": "",
+                    "cmdAvail2": "",
+                    "cmdAvail3": "",
+                    "cmdCool": "",
+                    "cmdCool2": "",
+                    "cmdPerms": "",
+                    "cmdPerms2": "",
+                    "cmdAlias": "",
+                    "cmdUsage": ""
+                },
+                "second": {
+                    "start": "",
+                    "middle": "",
+                    "end": "",
+                    "end2": ""
+                }
+            }
+        },
+        "info": {
+            "description": "",
+            "usage": "",
+            "start": "",
+            "servers": "",
+            "giveaways": "",
+            "polls": "",
+            "uptime": "",
+            "ping": "",
+            "database": "",
+            "library": "",
+            "links": "",
+            "links2": "",
+            "links3": ""
+        },
+        "giveaway": {
+            "description": "",
+            "usage": "",
+            "tooMany": "",
+            "validChannel": "",
+            "validChannel2": "",
+            "validTime": "",
+            "validWinners": "",
+            "validPrize": "",
+            "ormore": "",
+            "orless": "",
+            "format": "",
+            "formatWinners": "",
+            "maxwins": "",
+            "giveaway": "",
+            "react": "",
+            "react2": "",
+            "hosted": "",
+            "time": "",
+            "prize": "",
+            "winners": "",
+            "reqs": "",
+            "noperms": "",
+            "noperms2": "",
+            "noperms3": "",
+            "success": ""
+        },
+        "polls": {
+            "description": "",
+            "usage": "",
+            "tooMany": "",
+            "validTime": "",
+            "longerThan": "",
+            "shorterThan": "",
+            "validQuestion": "",
+            "validOptions": "",
+            "validOption2": "",
+            "maxOptions": "",
+            "polls": "",
+            "title": ""
+        },
+        "reroll": {
+            "description": "",
+            "usage": "",
+            "validID": "",
+            "notValid": "",
+            "Winners": "",
+            "notEnded": "",
+            "notHosted": "",
+            "noUsers": "",
+            "noPicks": "",
+            "onlyWinners": "",
+            "onlyWinners2": "",
+            "winnerNum": ""
+        }
+    },
+    "Functions": {
+        "fetchTime": {
+            "years": "",
+            "days": "",
+            "hours": "",
+            "minutes": "",
+            "seconds": ""
+        },
+        "giveawaysEnd": {
+            "giveaway": "",
+            "noUsers": "",
+            "ended": "",
+            "prize": "",
+            "winnersNone": "",
+            "winners": "",
+            "reqs": "",
+            "noOne": "",
+            "warn": "",
+            "warn1": "",
+            "warn2": "",
+            "givEnd": "",
+            "partici": "",
+            "congrats": "",
+            "youWon": ""
+        },
+        "poll": {
+            "end": ""
+        }
+    }
+}

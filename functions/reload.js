@@ -1,11 +1,10 @@
-function Reload(client, category, name, eventFolder) {
+function Reload(client, category, name) {
     if (category === "events") {
         if (!name) return 'Provide an event name to reload!'
-        if (!eventFolder) return 'Provide an event folder to reload!'
         try {
             const evtName = name;
-            delete require.cache[require.resolve(`../events/${eventFolder}/${name}.js`)];
-            const pull = require(`../events/${eventFolder}/${name}`);
+            delete require.cache[require.resolve(`../events/${name}.js`)];
+            const pull = require(`../events/${name}`);
 
             client.off(evtName, typeof client._events[evtName] == 'function' ? client._events[evtName] : client._events[evtName][0])
             client.event.delete(evtName)
@@ -13,7 +12,7 @@ function Reload(client, category, name, eventFolder) {
             client.on(evtName, pull.bind(null, client))
             client.event.set(evtName, pull.bind(null, client))
         } catch (e) {
-            return `Couldn't reload: **${eventFolder}/${name}**\n**Error**: ${e.message}`
+            return `Couldn't reload: **${category}/${name}**\n**Error**: ${e.message}`
         }
         return `Reloaded event: **${name}**.js`
     }

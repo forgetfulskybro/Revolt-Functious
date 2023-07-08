@@ -2,9 +2,7 @@ const Reload = require("../functions/reload")
 module.exports = {
     config: {
         name: "reload",
-        description: "Reloads code in the bot",
-        usage: `[CategoryName] [CommandName]`,
-        cooldown: 5000,
+        cooldown: 0,
         available: "Owner",
         permissions: [],
         aliases: ["r"]

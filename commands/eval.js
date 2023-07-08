@@ -2,9 +2,7 @@ const { inspect } = require('util');
 module.exports = {
 	config: {
 		name: "eval",
-		description: "Evaluates code",
-		usage: `<input>`,
-		cooldown: 0,
+		cooldown: 1000,
 		permissions: [],
 		available: "Owner",
 		aliases: ["e"]
@@ -22,6 +20,7 @@ module.exports = {
 			if (typeof code !== 'string') {
 				if (code && typeof code.session === 'string') code.session = null;
 				if (code && typeof code.vapid === 'string') code.vapid = null;
+				if (code && typeof code.connectionString === 'string') code.connectionString = null;
 				code = inspect(code, { depth: 0 });
 			} 
 			message.reply(`\`\`\`js\n${code}`, false).catch((e) => {

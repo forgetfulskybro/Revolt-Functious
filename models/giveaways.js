@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const Schema = new mongoose.Schema({
+const giveaways = new Schema({
     owner: { type: String, required: true },
     serverId: { type: String, required: true },
     channelId: { type: String, required: true },
@@ -13,8 +13,9 @@ const Schema = new mongoose.Schema({
     pickedWinners: [{ type: Object }],
     picking: [{ type: Object }],
     ended: { type: Boolean, default: false },
+    lang: { type: String, required: true, default: "en_EN" },
     requirement: { type: String },
     endDate: { type: String }
 });
 
-module.exports = mongoose.model("giveaways", Schema);
+module.exports = model("giveaways", giveaways);

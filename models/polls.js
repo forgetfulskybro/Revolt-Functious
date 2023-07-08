@@ -1,7 +1,8 @@
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const Schema = new mongoose.Schema({
+const polls = new Schema({
     owner: { type: String },
+    serverId: { type: String },
     channelId: { type: String },
     messageId: { type: String },
     avatars: { type: Object },
@@ -13,4 +14,4 @@ const Schema = new mongoose.Schema({
     options: { type: Object },
 });
 
-module.exports = mongoose.model("polls", Schema); 
+module.exports = model("polls", polls); 

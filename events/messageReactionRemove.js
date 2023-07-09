@@ -16,7 +16,7 @@ module.exports = async (client, message, userId, emojiId) => {
 
             if (colors.test(emojiId)) emote = `:${emojiId}:`;
             else if (!colors.test(emojiId)) emote = emojiId
-            return message.edit(collector.type === "content" ? { content: message.content.replace(`${emote} $\\sf{\\textcolor{${emoji.color}}{${emoji.name}}}$`, `{role:${emoji.name}}`) } : { embeds: [new Embed().setColor("#A52F05").setDescription(client.messages.get(message.id).embeds[0].description.replace(`{role:${collector.regex[0]}}`, `:${emojiId}: $\\sf{\\textcolor{${collector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : collector.roles[0][1].colour}}{${collector.roles[0][1].name}}}$`))] }).catch(() => { });
+            return message.edit(collector.type === "content" ? { content: message.content.replace(`${emote} $\\text{\\textcolor{${emoji.color}}{${emoji.name}}}$`, `{role:${emoji.name}}`) } : { embeds: [new Embed().setColor("#A52F05").setDescription(client.messages.get(message.id).embeds[0].description.replace(`{role:${collector.regex[0]}}`, `:${emojiId}: $\\text{\\textcolor{${collector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : collector.roles[0][1].colour}}{${collector.roles[0][1].name}}}$`))] }).catch(() => { });
         }
     } else if (pollCheck) {
         if (client.reactions.get(userId)) return client.users.get(userId).openDM().then(dm => dm.sendMessage(client.translate.get(pollCheck.language, "Events.messageReactionRemove.tooFast"))).catch(() => { });

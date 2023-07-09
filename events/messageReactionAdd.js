@@ -29,7 +29,7 @@ module.exports = async (client, message, userId, emojiId) => {
             if (colors.test(emojiId)) emote = `:${emojiId}:`;
             else if (!colors.test(emojiId)) emote = emojiId
             collector.rolesDone.push({ emoji: emojiId, role: collector.roles[0][0], name: collector.roles[0][1].name, color: collector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : collector.roles[0][1].colour });
-            message.edit(collector.type === "content" ? { content: message.content.replace(`{role:${collector.regex[0]}}`, `${emote} $\\sf{\\textcolor{${collector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : collector.roles[0][1].colour}}{${collector.roles[0][1].name}}}$`) } : { embeds: [new Embed().setColor("#A52F05").setDescription(client.messages.get(message.id).embeds[0].description.replace(`{role:${collector.regex[0]}}`, `:${emojiId}: $\\sf{\\textcolor{${collector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : collector.roles[0][1].colour}}{${collector.roles[0][1].name}}}$`))] })
+            message.edit(collector.type === "content" ? { content: message.content.replace(`{role:${collector.regex[0]}}`, `${emote} $\\text{\\textcolor{${collector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : collector.roles[0][1].colour}}{${collector.roles[0][1].name}}}$`) } : { embeds: [new Embed().setColor("#A52F05").setDescription(client.messages.get(message.id).embeds[0].description.replace(`{role:${collector.regex[0]}}`, `:${emojiId}: $\\text{\\textcolor{${collector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : collector.roles[0][1].colour}}{${collector.roles[0][1].name}}}$`))] })
             collector.roles.shift();
             return collector.regex.shift();
         }

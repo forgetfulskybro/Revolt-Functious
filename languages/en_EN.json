@@ -82,7 +82,8 @@
             "deleting": "Deleting",
             "msgId": "Message",
             "explain": "Explanation",
-            "explain2": "Once you create a reaction message (`f!roles create`), you will need to provide a message with roles (Format: `{role:Blue}`) and the bot will copy your message. React to the bot's message for the roles to automatically be updated and once you are finished, react with ✅ to complete it."
+            "explain2": "Once you create a reaction message (`f!roles create`), you will need to provide a message with roles (Format: `{role:Blue}`) and the bot will copy your message. React to the bot's message for the roles to automatically be updated and once you are finished, react with ✅ to complete it.",
+            "dm": "Direct Messages"
         },
         "help": {
             "description": "Help command",

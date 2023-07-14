@@ -72,6 +72,7 @@ module.exports = {
             const coll = await client.messageCollector.set(message.authorId, {
                 user: message.authorId,
                 timeout: null,
+                oldMessageId: null,
                 messageId: null,
                 channelId: channel.id,
                 type: pick[picked.indexOf(true)] || "content",
@@ -88,12 +89,15 @@ module.exports = {
             }, 1500000);
             client.messageCollector.get(message.author.id).timeout = timeout;
 
+            const react = [client.config.emojis.cross]
             setTimeout(() => client.used.delete(`${message.authorId}-roles`), 6000)
             if (channel.id !== message.channel.id) {
                 message.reply(`${client.translate.get(db.language, "Commands.roles.success")} <#${channel.id}>`, false);
-                return channel.sendMessage({ embeds: [new Embed().setDescription(`${client.translate.get(db.language, "Commands.roles.react")}\n\n${client.translate.get(db.language, "Commands.roles.react2")}`).setColor(`#A52F05`)] });
+                return await channel.sendMessage({ embeds: [new Embed().setDescription(`${client.translate.get(db.language, "Commands.roles.react")}\n\n${client.translate.get(db.language, "Commands.roles.react2")}`).setColor(`#A52F05`)], interactions: [react] })
+                    .then((msg) => { client.messageCollector.get(message?.authorId).oldMessageId = msg.id });
             } else {
-                return message.channel.sendMessage({ embeds: [new Embed().setDescription(`${client.translate.get(db.language, "Commands.roles.react")}\n\n${client.translate.get(db.language, "Commands.roles.react2")}`).setColor(`#A52F05`)] });
+                return await message.channel.sendMessage({ embeds: [new Embed().setDescription(`${client.translate.get(db.language, "Commands.roles.react")}\n\n${client.translate.get(db.language, "Commands.roles.react2")}`).setColor(`#A52F05`)], interactions: [react] })
+                    .then((msg) => { client.messageCollector.get(message?.authorId).oldMessageId = msg.id });
             }
         }
     }

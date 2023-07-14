@@ -17,7 +17,8 @@
             "maxRoles": "You can only have a maximum of 20 roles in your message.",
             "unknown": "There are unknown roles in your message, please remove them and try again.",
             "repeat": "There is already a reaction roles with these roles, please remove them and try again",
-            "duplicate": "There are duplicate roles in your message, please remove them and try again"
+            "duplicate": "There are duplicate roles in your message, please remove them and try again",
+            "positions": "There are roles with higher ranks (position) than my highest role in your message, please remove them and try again"
         },
         "messageReactionAdd": {
             "title": "title",
@@ -42,7 +43,8 @@
             "cooldown": "Reaction cooldown is 3 seconds",
             "success": "Successfully added role {role}",
             "noPerms": "I do not have permission to give role {role}",
-            "role": "role"
+            "role": "role",
+            "deleteCollector": "Successfully stopped reaction collector!"
         },
         "messageReactionRemove": {
             "title": "Title",
@@ -63,7 +65,7 @@
             "ended": "The message collector has ended after 25 minutes.",
             "success": "Successfully sent message collector to",
             "react": "Send a message you would like to be as your reaction roles message. After that is done, react  with emojis in order of the roles you want to be added to the message.",
-            "react2": "Once you're done, react with ✅ to complete it.",
+            "react2": "Once you're done, react with ✅ to complete it.\nTo cancel this reaction collector, react with ❌ to stop it!",
             "noPerms": "I require the `AssignRoles` permission to add roles to users.",
             "max": "You can only have a maximum of 12 reaction roles in your server.",
             "noRoles": "There are no reaction roles setup currently. To add some, type",

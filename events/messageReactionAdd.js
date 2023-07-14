@@ -9,7 +9,7 @@ module.exports = async (client, message, userId, emojiId) => {
     const pollCheck = client.polls.get(message.id);
     const collector = client.messageCollector.get(userId);
 
-    if (collector && collector.messageId === message.id && collector.channelId === message.channelId) {
+    if (collector && collector.messageId === message.id || collector.oldMessageId === message.id && collector.channelId === message.channelId) {
         if (emojiId === client.config.emojis.check) {
             if (collector.roles.length === 0) {
                 const db = await client.database.getGuild(message.server.id);
@@ -23,6 +23,10 @@ module.exports = async (client, message, userId, emojiId) => {
                 clearTimeout(client.messageCollector.get(userId).timeout);
                 return client.messageCollector.delete(userId);
             } else return;
+        } else if (emojiId === client.config.emojis.cross) {
+            const db = await client.database.getGuild(message.server.id);
+            client.messageCollector.delete(userId);
+            return message.reply({ embeds: [new Embed().setColor("#A52F05").setDescription(client.translate.get(db.language, "Events.messageReactionAdd.deleteCollector"))] }, );
         } else {
             if (collector.roles.length === 0) return;
             let emote;

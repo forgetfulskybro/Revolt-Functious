@@ -124,7 +124,8 @@
             "library": "Library",
             "links": "Links",
             "links2": "Invite",
-            "links3": "Support"
+            "links3": "Support",
+            "links4": "Vote"
         },
         "giveaway": {
             "description": "Creates a giveaway. Reactions have 3 second cooldown.",

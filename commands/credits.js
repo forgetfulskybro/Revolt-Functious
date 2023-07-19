@@ -13,7 +13,7 @@ module.exports = {
 
         const embed = new Embed()
             .setTitle(client.translate.get(db.language, "Commands.credits.title"))
-            .setDescription(`${client.translate.get(db.language, "Commands.credits.thankyou")}\n${client.translate.get(db.language, "Commands.credits.thankyou2")}\n\n**${client.translate.get(db.language, "Commands.credits.translators")}**:\n${translators.map(t => `<@${t}>`).join("\n")}`)
+            .setDescription(`${client.translate.get(db.language, "Commands.credits.thankyou")}${client.translate.get(db.language, "Commands.credits.thankyou2")}\n\n**${client.translate.get(db.language, "Commands.credits.translators")}**:\n${translators.map(t => `<@${t}>`).join("\n")}`)
 
         message.reply({ embeds: [embed] }, false)
     },

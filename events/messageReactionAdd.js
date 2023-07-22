@@ -9,7 +9,7 @@ module.exports = async (client, message, userId, emojiId) => {
     const pollCheck = client.polls.get(message.id);
     const collector = client.messageCollector.get(userId);
 
-    if (collector && collector.messageId === message.id || collector.oldMessageId && collector.oldMessageId === message.id && collector.channelId === message.channelId) {
+    if (collector && collector.messageId === message.id || collector?.oldMessageId && collector?.oldMessageId === message.id && collector.channelId === message.channelId) {
         if (emojiId === client.config.emojis.check) {
             if (collector.roles.length === 0) {
                 const db = await client.database.getGuild(message.server.id);

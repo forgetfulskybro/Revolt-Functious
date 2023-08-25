@@ -4,9 +4,9 @@ class TranslationHandler {
 
         this.availableLanguages = languages ?? [
             'en_EN',
-            // 'es_ES',
-            // 'ar_AR',
-            // 'pt_BR',
+            'es_ES',
+            //'ar_AR',
+            'pt_BR',
             //'sk_SK',
         ];
 

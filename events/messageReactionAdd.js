@@ -95,7 +95,7 @@ module.exports = async (client, message, userId, emojiId) => {
             message.edit({ content: `${client.translate.get(pollCheck.lang, "Events.messageReactionAdd.owner")} (<@${pollCheck.owner}>) ${client.translate.get(pollCheck.lang, "Events.messageReactionAdd.end")}:`, embeds: [new Embed().setDescription(tooMuch.length > 0 ? tooMuch.map(e => e).join("\n") : null).setMedia(await client.Uploader.upload(pollCheck.poll.canvas.toBuffer(), `Poll.png`)).setColor("#F24646")] }).catch(() => { });
             return client.polls.delete(message.id);
         } else if (convert === 0 && convert !== 10 || convert !== -1 && convert !== 10) {
-            if (client.reactions.get(userId)) return client.users.get(userId).openDM().then(dm => dm.sendMessage(client.translate.get(pollCheck.lang, "Events.messageReactionAdd.tooFast"))).catch(() => { });
+            if (client.reactions.get(userId)) return client.users.get(userId)?.openDM().then(dm => dm.sendMessage(client.translate.get(pollCheck.lang, "Events.messageReactionAdd.tooFast"))).catch(() => { });
             if (pollCheck.users.includes(userId)) return;
             pollCheck.users.push(userId);
             const user = (client.users.get(userId)) || await client.users.fetch(userId);
@@ -117,7 +117,7 @@ module.exports = async (client, message, userId, emojiId) => {
                 client.reactions.set(userId, Date.now() + 3000)
                 setTimeout(() => client.reactions.delete(userId), 3000)
 
-                client.users.get(userId).openDM().then(dm => dm.sendMessage(`${client.translate.get(db.lang, "Events.messageReactionAdd.joined")} [${db.prize}](https://app.revolt.chat/server/${db.serverId}/channel/${db.channelId}/${db.messageId})!\n${client.translate.get(db.lang, "Events.messageReactionAdd.joined2")} **${db.users.length}** ${client.translate.get(db.lang, "Events.messageReactionAdd.joined3")}`)).catch(() => { });
+                client.users.get(userId)?.openDM().then(dm => dm.sendMessage(`${client.translate.get(db.lang, "Events.messageReactionAdd.joined")} [${db.prize}](https://app.revolt.chat/server/${db.serverId}/channel/${db.channelId}/${db.messageId})!\n${client.translate.get(db.lang, "Events.messageReactionAdd.joined2")} **${db.users.length}** ${client.translate.get(db.lang, "Events.messageReactionAdd.joined3")}`)).catch(() => { });
             } else if (emojiId === client.config.emojis.stop && db && db.owner === userId && !db.ended) {
                 let endDate = Date.now();
 

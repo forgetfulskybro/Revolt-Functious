@@ -19,7 +19,7 @@ module.exports = async (client, message, userId, emojiId) => {
             return message.edit(collector.type === "content" ? { content: message.content.replace(`${emote} $\\text{\\textcolor{${emoji.color}}{${emoji.name}}}$`, `{role:${emoji.name}}`) } : { embeds: [new Embed().setColor("#A52F05").setDescription(client.messages.get(message.id).embeds[0].description.replace(`{role:${collector.regex[0]}}`, `:${emojiId}: $\\text{\\textcolor{${collector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : collector.roles[0][1].colour}}{${collector.roles[0][1].name}}}$`))] }).catch(() => { });
         }
     } else if (pollCheck) {
-        if (client.reactions.get(userId)) return client.users.get(userId).openDM().then(dm => dm.sendMessage(client.translate.get(pollCheck.language, "Events.messageReactionRemove.tooFast"))).catch(() => { });
+        if (client.reactions.get(userId)) return client.users.get(userId)?.openDM().then(dm => dm.sendMessage(client.translate.get(pollCheck.language, "Events.messageReactionRemove.tooFast"))).catch(() => { });
         let convert = emojis.findIndex(e => e.name === emojiId);
         if (convert === 0 && convert !== 10 || convert !== -1 && convert !== 10) {
             if (!pollCheck.users.includes(userId)) return;
@@ -55,7 +55,7 @@ module.exports = async (client, message, userId, emojiId) => {
                 client.reactions.set(userId, Date.now() + 3000)
                 setTimeout(() => client.reactions.delete(userId), 3000)
 
-                client.users.get(userId).openDM().then(dm => dm.sendMessage(`${client.translate.get(pollCheck.language, "Events.messageReactionRemove.left")} [${db.prize}](https://app.revolt.chat/server/${db.serverId}/channel/${db.channelId}/${db.messageId})!\n${client.translate.get(pollCheck.language, "Events.messageReactionRemove.left2")} **${db.users.length}** ${client.translate.get(pollCheck.language, "Events.messageReactionRemove.left")}!`)).catch(() => { });
+                client.users.get(userId)?.openDM().then(dm => dm.sendMessage(`${client.translate.get(pollCheck.language, "Events.messageReactionRemove.left")} [${db.prize}](https://app.revolt.chat/server/${db.serverId}/channel/${db.channelId}/${db.messageId})!\n${client.translate.get(pollCheck.language, "Events.messageReactionRemove.left2")} **${db.users.length}** ${client.translate.get(pollCheck.language, "Events.messageReactionRemove.left")}!`)).catch(() => { });
             }
         } else {
             const db2 = await client.database.getGuild(message.server.id, true)

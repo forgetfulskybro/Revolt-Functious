@@ -80,6 +80,7 @@
       "off": "Off",
       "create": "Creating",
       "createExample": "create [Channel Mention] [Type: content | embed]",
+      "editing": "Editing",
       "viewing": "Viewing",
       "deleting": "Deleting",
       "msgId": "Message",

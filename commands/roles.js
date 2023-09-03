@@ -14,14 +14,17 @@ module.exports = {
     run: async (client, message, args, db) => {
         if (!message.channel.havePermission("AssignRoles")) return message.reply({ embeds: [new Embed().setDescription(`${client.translate.get(db.language, "Commands.roles.noPerms")}`).setColor(`#FF0000`)] }, false);
 
-        if (args.filter(e => e).length === 0 || args[0].toLowerCase() === "help") {
-            const embed = new Embed()
-                .setColor(`#A52F05`)
-                .setDescription(`### ${client.translate.get(db.language, "Commands.roles.view")} ${client.translate.get(db.language, "Commands.roles.usage").replace("h", "H")}\n\n**${client.translate.get(db.language, "Commands.roles.explain")}**\n${client.translate.get(db.language, "Commands.roles.explain2")}\n\n**${client.translate.get(db.language, "Commands.roles.create")}**\n\`${db.prefix}roles ${client.translate.get(db.language, "Commands.roles.createExample")}\`\n\n**${client.translate.get(db.language, "Commands.roles.viewing")}**\n\`${db.prefix}roles view\`\n\n**${client.translate.get(db.language, "Commands.roles.deleting")}**\n\`${db.prefix}roles delete [${client.translate.get(db.language, "Commands.roles.msgId")} ID, e.g. ${message.id}]\`\n\n**${client.translate.get(db.language, "Commands.roles.dm")}**\n\`${db.prefix}roles dm\``)
-            
-            setTimeout(() => client.used.delete(`${message.authorId}-roles`), 6000)
-            return message.reply({ embeds: [embed] }, false)
-        } else switch (args[0]?.toLowerCase()) {
+        switch (args[0]?.toLowerCase()) {
+            default: "help"
+            case "help":
+                const embed = new Embed()
+                    .setColor(`#A52F05`)
+                    .setDescription(`### ${client.translate.get(db.language, "Commands.roles.view")} ${client.translate.get(db.language, "Commands.roles.usage").replace("h", "H")}\n\n**${client.translate.get(db.language, "Commands.roles.explain")}**\n${client.translate.get(db.language, "Commands.roles.explain2")}\n\n**${client.translate.get(db.language, "Commands.roles.create")}**\n\`${db.prefix}roles ${client.translate.get(db.language, "Commands.roles.createExample")}\`\n\n**${client.translate.get(db.language, "Commands.roles.editing")}**\n\`${db.prefix}roles edit [${client.translate.get(db.language, "Commands.roles.msgId")} ID, e.g. ${message.id}]\`\n\n**${client.translate.get(db.language, "Commands.roles.viewing")}**\n\`${db.prefix}roles view\`\n\n**${client.translate.get(db.language, "Commands.roles.deleting")}**\n\`${db.prefix}roles delete [${client.translate.get(db.language, "Commands.roles.msgId")} ID, e.g. ${message.id}]\`\n\n**${client.translate.get(db.language, "Commands.roles.dm")}**\n\`${db.prefix}roles dm\``)
+
+                setTimeout(() => client.used.delete(`${message.authorId}-roles`), 6000)
+                message.reply({ embeds: [embed] }, false)
+                break;
+
             case "view":
                 if (db.roles.length === 0) return message.reply({ embeds: [new Embed().setDescription(`${client.translate.get(db.language, "Commands.roles.noRoles")}: \`${db.prefix}roles\``).setColor(`#FF0000`)] }, false);
                 const pages = new Paginator({ timeout: 5 * 2e4, user: message.authorId, client: client })

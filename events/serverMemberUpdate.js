@@ -1,7 +1,6 @@
 let type;
 module.exports = async (client, member, memberOld) => {
-    console.log(member)
-
+    // Work in progress
     if (member.roles > memberOld.roles && member.id.user === client.user.id) type = "add"
     else if (member.roles < memberOld.roles) type = "remove"
     else return;

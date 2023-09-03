@@ -21,7 +21,7 @@ module.exports = {
 				if (code && typeof code.session === 'string') code.session = null;
 				if (code && typeof code.vapid === 'string') code.vapid = null;
 				if (code && typeof code.connectionString === 'string') code.connectionString = null;
-				code = inspect(code, { depth: 0 });
+				code = inspect(code, { depth: 1 });
 			} 
 			message.reply(`\`\`\`js\n${code}`, false).catch((e) => {
 				message.reply(`\`\`\`js\n${e.message}\n\`\`\``, false);

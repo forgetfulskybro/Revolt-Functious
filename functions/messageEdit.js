@@ -45,7 +45,7 @@ async function Collector(client, message, db) {
     }
 
     let positions = [];
-    const botRole = (await message.server.fetchMember(client.user.id))?.orderedRoles[(await message.server.fetchMember(client.user.id))?.orderedRoles.length-1]
+    const botRole = message.channel.server.member.orderedRoles.reverse()[0]
     if (!botRole) {
         message.reply({ embeds: [new Embed().setColor("#FF0000").setDescription(client.translate.get(db.language, "Events.messageCreate.noBotRole"))] }, false).catch(() => { return });
         return message.react(client.config.emojis.cross).catch(() => { return });

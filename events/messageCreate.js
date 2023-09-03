@@ -1,5 +1,6 @@
 const Embed = require("../functions/embed");
 const Collector = require("../functions/messageCollector");
+const EditCollector = require("../functions/messageEdit");
 module.exports = async (client, message) => {
     if (!message || message.channel.type === "DirectMessage" || !message.content || message.author.bot) return;
 
@@ -19,6 +20,8 @@ module.exports = async (client, message) => {
     }
 
     if (client.messageCollector.has(message.authorId) && client.messageCollector.get(message.authorId).channelId === message.channelId && !client.messageCollector.get(message.authorId).messageId) return await Collector(client, message, db);
+    if (client.messageEdit.has(message.authorId) && client.messageEdit.get(message.authorId).channelId === message.channelId && !client.messageEdit.get(message.authorId).messageId) return await EditCollector(client, message, db);
+
     let commandfile = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
     if (commandfile) {
         if (!message.content.startsWith(db.prefix)) return;

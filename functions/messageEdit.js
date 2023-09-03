@@ -2,7 +2,7 @@ const Embed = require("../functions/embed");
 async function Collector(client, message, db) {
     const regex = /{role:(.*?)}/;
     const regexAll = /{role:(.*?)}/g;
-    const collector = client.messageCollector.get(message.authorId);
+    const collector = client.messageEdit.get(message.authorId);
     if (!message.content.match(regexAll) || message.content.match(regexAll)?.length === 0) {
         message.reply({ embeds: [new Embed().setColor("#FF0000").setDescription(`${client.translate.get(db.language, "Events.messageCreate.noRoles")}: \`{role:Red}\``)] }, false).catch(() => { return });
         return message.react(client.config.emojis.cross).catch(() => { return });

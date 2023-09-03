@@ -16,7 +16,6 @@
       "noReact": "I don't have permission to add reactions so this may not work correctly.",
       "maxRoles": "You can only have a maximum of 20 roles in your message.",
       "unknown": "There are unknown roles in your message, please remove them and try again.",
-      "repeat": "There is already a reaction role message with these roles, please remove them and try again",
       "duplicate": "There are duplicate roles in your message, please remove them and try again",
       "positions": "There are roles with higher ranks (position) than my highest role in your message, please remove them and try again"
     },
@@ -72,6 +71,7 @@
       "jump": "Jump",
       "roles": "Roles",
       "delete": "Provide an ID for the reaction role message to delete it",
+      "edit": "Provide an ID for the reaction role message to edit it",
       "notFound": "I could not find a reaction role message with that ID.",
       "deleted": "Successfully deleted that reaction role message.",
       "view": "Viewing Reaction Role Messages",

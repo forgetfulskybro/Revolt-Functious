@@ -8,12 +8,14 @@ module.exports = async (client, message, userId, emojiId) => {
     const paginateCheck = client.paginate.get(userId);
     const pollCheck = client.polls.get(message.id);
     const collector = client.messageCollector.get(userId);
+    const editCollector = client.messageEdit.get(userId);
 
     if (collector && collector.messageId === message.id || collector?.oldMessageId && collector?.oldMessageId === message.id && collector.channelId === message.channelId) {
         if (emojiId === client.config.emojis.check) {
             if (collector.roles.length === 0) {
                 const db = await client.database.getGuild(message.server.id);
                 message.delete().catch(() => { });
+                client.messages.get(collector?.oldMessageId)?.delete().catch(() => { })
                 const reactions = [...collector.rolesDone.map(e => e.emoji)];
                 message.channel.sendMessage(collector.type === "content" ? { content: `${message.content}\n\n##### ${client.translate.get(db.language, "Events.messageReactionAdd.cooldown")}`, interactions: [reactions] } : { embeds: [new Embed().setColor("#A52F05").setDescription(`${client.messages.get(message.id).embeds[0].description}\n\n##### ${client.translate.get(db.language, "Events.messageReactionAdd.cooldown")}`)], interactions: [reactions] }).then(async (msg) => {
                     db.roles.push({ msgId: msg.id, chanId: msg.channelId, roles: [...collector.rolesDone] });
@@ -36,6 +38,36 @@ module.exports = async (client, message, userId, emojiId) => {
             message.edit(collector.type === "content" ? { content: message.content.replace(`{role:${collector.regex[0]}}`, `${emote} $\\text{\\textcolor{${collector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : collector.roles[0][1].colour}}{${collector.roles[0][1].name}}}$`) } : { embeds: [new Embed().setColor("#A52F05").setDescription(client.messages.get(message.id).embeds[0].description.replace(`{role:${collector.regex[0]}}`, `:${emojiId}: $\\text{\\textcolor{${collector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : collector.roles[0][1].colour}}{${collector.roles[0][1].name}}}$`))] })
             collector.roles.shift();
             return collector.regex.shift();
+        }
+    } else if (editCollector && editCollector.messageId === message.id || editCollector?.botMessage && editCollector?.botMessage === message.id && editCollector.channelId === message.channelId) {
+        if (emojiId === client.config.emojis.check) {
+            if (editCollector.roles.length === 0) {
+                const db = await client.database.getGuild(message.server.id);
+                message.delete().catch(() => { });
+                client.messages.get(editCollector?.oldMessageId)?.delete().catch(() => { })
+                client.messages.get(editCollector?.botMessage)?.delete().catch(() => { })
+                const reactions = [...editCollector.rolesDone.map(e => e.emoji)];
+                message.channel.sendMessage(editCollector.type === "content" ? { content: `${message.content}\n\n##### ${client.translate.get(db.language, "Events.messageReactionAdd.cooldown")}`, interactions: [reactions] } : { embeds: [new Embed().setColor("#A52F05").setDescription(`${client.messages.get(message.id).embeds[0].description}\n\n##### ${client.translate.get(db.language, "Events.messageReactionAdd.cooldown")}`)], interactions: [reactions] }).then(async (msg) => {
+                    db.roles.push({ msgId: msg.id, chanId: msg.channelId, roles: [...editCollector.rolesDone] });
+                    await client.database.updateGuild(msg.server.id, { roles: db.roles.filter(e => e.msgId !== editCollector.oldMessageId) });
+                });
+
+                clearTimeout(client.messageEdit.get(userId).timeout);
+                return client.messageEdit.delete(userId);
+            } else return;
+        } else if (emojiId === client.config.emojis.cross) {
+            const db = await client.database.getGuild(message.server.id);
+            client.messageEdit.delete(userId);
+            return message.reply({ embeds: [new Embed().setColor("#A52F05").setDescription(client.translate.get(db.language, "Events.messageReactionAdd.deleteCollector"))] },);
+        } else {
+            if (editCollector.roles.length === 0) return;
+            let emote;
+            if (colors.test(emojiId)) emote = `:${emojiId}:`;
+            else if (!colors.test(emojiId)) emote = emojiId
+            editCollector.rolesDone.push({ emoji: emojiId, role: editCollector.roles[0][0], name: editCollector.roles[0][1].name, color: editCollector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : editCollector.roles[0][1].colour });
+            message.edit(editCollector.type === "content" ? { content: message.content.replace(`{role:${editCollector.regex[0]}}`, `${emote} $\\text{\\textcolor{${editCollector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : editCollector.roles[0][1].colour}}{${editCollector.roles[0][1].name}}}$`) } : { embeds: [new Embed().setColor("#A52F05").setDescription(client.messages.get(message.id).embeds[0].description.replace(`{role:${editCollector.regex[0]}}`, `:${emojiId}: $\\text{\\textcolor{${editCollector.roles[0][1].colour?.includes("linear-gradient") ? '#000000' : editCollector.roles[0][1].colour}}{${editCollector.roles[0][1].name}}}$`))] })
+            editCollector.roles.shift();
+            return editCollector.regex.shift();
         }
     } else if (paginateCheck && paginateCheck.message == message.id) {
         let pages = paginateCheck.pages;

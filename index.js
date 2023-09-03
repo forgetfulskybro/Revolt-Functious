@@ -1,10 +1,10 @@
 const { Client } = require("revolt.js");
 const { Collection } = require('@discordjs/collection');
 const { token, mongoDB, RBL, MainBot } = require("./botconfig.json");
-const fetch = require("wumpfetch");
 
 const checkGiveaways = require("./functions/checkGiveaways");
 const giveawaysEnd = require("./functions/giveawaysEnd");
+const checkRoles = require("./functions/checkRoles");
 const checkPolls = require("./functions/checkPolls");
 const color = require("./functions/colorCodes");
 
@@ -13,9 +13,9 @@ const Giveaways = require("./models/giveaways");
 
 const client = new Client();
 const Uploader = require("revolt-uploader");
+const fetch = require("wumpfetch");
 const TranslationHandler = require('./handlers/translation');
 const DatabaseHandler = require('./handlers/database');
-const checkRoles = require("./functions/checkRoles");
 
 client.Uploader = new Uploader(client);
 client.config = require("./config");
@@ -26,7 +26,7 @@ client.database.connectToDatabase();
 client.database.cacheSweeper(client);
 client.database.guildSweeper(client);
 
-["reactions", "paginate", "timeout", "polls", "used", "messageCollector"].forEach(x => client[x] = new Map());
+["reactions", "paginate", "timeout", "polls", "used", "messageCollector", "messageEdit"].forEach(x => client[x] = new Map());
 ["aliases", "commands", "event", "functions"].forEach(x => client[x] = new Collection());
 ["command", "event", "function"].forEach(x => require(`./handlers/${x}`)(client));
 

@@ -24,7 +24,7 @@ module.exports = {
 				code = inspect(code, { depth: 1 });
 			} 
 			message.reply(`\`\`\`js\n${code}`, false).catch((e) => {
-				message.reply(`\`\`\`js\n${e.message}\n\`\`\``, false);
+				message.reply(`\`\`\`js\n${e.message.slice(0, 1985)}\n\`\`\``, false);
 			});
 		} catch (e) {
 			message.reply(`\`\`\`js\n${e ? e.message : "Unknown Error"}`, false);
